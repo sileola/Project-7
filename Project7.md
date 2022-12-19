@@ -1,1 +1,3 @@
 ## PROJECT 7: 
+
+## **STEP 1 — PREPARING THE NFS SERVER**
