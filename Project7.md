@@ -128,3 +128,43 @@ Next, I mounted lv-opt on /mnt/opt
 
 `sudo mount /dev/webdata-vg/lv-apps /mnt/apps`
 
+
+
+Next, I installed NFS server, configured it to start on reboot and made sure it is up and running:
+
+`sudo yum -y update`
+
+`sudo yum install nfs-utils -y`
+
+`sudo systemctl start nfs-server.service`
+
+`sudo systemctl enable nfs-server.service`
+
+`sudo systemctl status nfs-server.service`
+
+
+
+
+
+
+### **STEP 2: CONFIGURING THE DATABASE SERVER**
+
+On the database server
+
+Install MYSQL server
+
+
+`sudo apt update`
+
+`sudo apt install mysql-server -y`
+
+
+Verify that the service is up and running by using
+
+`sudo systemctl status mysql`
+
+![](./Images/mysql.PNG)
+
+
+Create a database and name it **tooling**
+
