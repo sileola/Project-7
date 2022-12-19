@@ -360,4 +360,62 @@ To make this change permanent – open following config file sudo vi /etc/syscon
 
 ![](./Images/disabled.PNG)
 
+`sudo systemctl start httpd`
 
+`sudo systemctl status httpd`
+
+![](./Images/statusapache.PNG)
+
+
+10. Update the website’s configuration to connect to the database (in /var/www/html/functions.php file). Apply tooling-db.sql script to your database using this command mysql -h <databse-private-ip> -u <db-username> -p <db-pasword> < tooling-db.sql
+
+`sudo vi /var/www/html/functions.php`
+
+![](./Images/config.PNG)
+
+`cd tooling`
+
+`sudo yum insatll mysql -y`
+
+On the DB server, open up the MYSQL/AURORA protocol on the IPv4 CIDR of NFS
+
+`sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf`
+
+![](./Images/mysql-bind-address.PNG)
+
+
+`sudo systemctl restart mysql`
+
+`sudo systemctl status mysql`
+
+From the webserver1, run
+
+`cd tooling`
+
+`mysql -h <database-private-ip-address> -u webaccess -p tooling < tooling-db.sql`
+
+eg
+
+
+mysql -h 172.31.22.238 -u webaccess -p tooling < tooling-db.sql
+
+
+From the Database server, run
+
+`sudo mysql`
+
+`show databases;`
+
+`use tooling;`
+
+`show tables;`
+
+`select * from users;`
+
+Open the website in your browser http://<Web-Server-Public-IP-Address-or-Public-DNS-Name>/index.php and make sure you can login into the website with myuser user.
+
+
+![](./Images/login.PNG)
+
+
+Project 7 completed successfully.
