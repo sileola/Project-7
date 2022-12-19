@@ -205,12 +205,10 @@ Important note: In order for NFS server to be accessible from your client, you m
 
 
 
-
-
-
 ___
 ### **STEP 2: CONFIGURING THE DATABASE SERVER**
 ___
+
 On the database server
 
 Install MYSQL server
@@ -250,5 +248,116 @@ Grant permission to **webaccess** user on **tooling** database to do anything on
 
 `exit`
 
+
+___
+### **STEP 3: PREPARING THE WEB SERVER**
+___
+
+1. Launch a new EC2 instance with Red Hat
+
+2. Install NFS client
+
+
+    `sudo yum install nfs-utils nfs4-acl-tools -y`
+
+
+3. Mount /var/www/ and target the NFS server’s export for apps
+
+    `sudo mkdir /var/www`
+
+
+    `sudo mount -t nfs -o rw,nosuid <NFS-Server-Private-IP-Address>:/mnt/apps /var/www`
+
+
+4. Verify that NFS was mounted successfully by running `df -h`. Make sure that the changes will persist on Web Server after reboot:
+
+    `sudo vi /etc/fstab`
+
+    add following line
+
+    `<NFS-Server-Private-IP-Address>:/mnt/apps /var/www nfs defaults 0 0`
+
+
+    ![](./Images/fstab.PNG)
+
+
+5. Install Remi’s repository, Apache and PHP
+
+    `sudo yum install httpd -y`
+
+
+    `sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm`
+
+
+    `sudo dnf install dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm`
+
+
+    `sudo dnf module reset php`
+
+
+    `sudo dnf module enable php:remi-7.4`
+
+
+    `sudo dnf install php php-opcache php-gd php-curl php-mysqlnd`
+
+
+    `sudo systemctl start php-fpm`
+
+
+    `sudo systemctl enable php-fpm`
+
+
+    `setsebool -P httpd_execmem 1`
+6. Verify that Apache files and directories are available on the Web Server in /var/www and also on the NFS server in /mnt/apps. If you see the same files – it means NFS is mounted correctly. You can try to create a new file touch test.txt from one server and check if the same file is accessible from other Web Servers.
+
+![](./Images/web1.PNG)
+
+
+![](./Images/nfs.PNG)
+
+7. Locate the log folder for Apache on the Web Server and mount it to NFS server’s export for logs. Repeat step No.4 to make sure the mount point will persist after reboot.
+
+
+    `sudo mount -t nfs -o rw,nosuid <NFS-Server-Private-IP-Address>:/mnt/logs /var/log/httpd`
+
+
+ `sudo vi /etc/fstab`
+
+
+`<NFS-Server-Private-IP-Address>:/mnt/logs /var/log/httpd nfs defaults 0 0`
+
+![](./Images/web1fstab.PNG)
+
+8. Fork the tooling source code from Darey.io Github Account to your Github account
+
+First, run
+
+`sudo yum install git`
+
+`git init`
+
+`git clone https://github.com/darey-io/tooling.git`
+
+![](./Images/forking.PNG)
+
+9. Deploy the tooling website’s code to the Webserver. Ensure that the html folder from the repository is deployed to /var/www/html
+
+`sudo cp -R html/. /var/www/html`
+
+
+Note 1: Oen TCP port 80 on the Web Server.
+
+![](./Images/tcp%3Dport-80.PNG)
+
+Note 2: If you encounter 403 Error – check permissions to your /var/www/html folder and also disable SELinux sudo setenforce 0
+
+
+To make this change permanent – open following config file sudo vi /etc/sysconfig/selinux and set SELINUX=disabledthen restrt httpd.
+
+`sudo setenforce 0`
+
+`sudo vi /etc/sysconfig/selinux`
+
+![](./Images/disabled.PNG)
 
 
