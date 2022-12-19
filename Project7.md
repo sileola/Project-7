@@ -142,13 +142,75 @@ Next, I installed NFS server, configured it to start on reboot and made sure it 
 
 `sudo systemctl status nfs-server.service`
 
+![](./Images/active-nfs-server.PNG)
+
+
+Next, xxport the mounts for webservers’ subnet cidr to connect as clients:
+
+`sudo chown -R nobody: /mnt/apps`
+
+`sudo chown -R nobody: /mnt/logs`
+
+`sudo chown -R nobody: /mnt/opt`
+
+`sudo chmod -R 777 /mnt/apps`
+
+`sudo chmod -R 777 /mnt/logs`
+
+`sudo chmod -R 777 /mnt/opt`
+
+`sudo systemctl restart nfs-server.service`
+
+
+Configure access to NFS for clients within the same subnet
+
+Using a text edior live Vim;
+
+`sudo vi /etc/exports`
+
+Paste in the code below (format accordingly):
+
+    /mnt/apps <Subnet-CIDR>(rw,sync,no_all_squash,no_root_squash)
+
+    /mnt/logs <Subnet-CIDR>(rw,sync,no_all_squash,no_root_squash)
+
+    /mnt/opt <Subnet-CIDR>(rw,sync,no_all_squash,no_root_squash)
+
+![](./Images/nfs-subnet.PNG)
+    
+
+`sudo exportfs -arv`
+
+![](./Images/export.PNG)
+
+
+Next, Check which port is used by NFS and open it using Security Groups (add new Inbound Rule):
+
+`rpcinfo -p | grep nfs`
+
+![](./Images/ports.PNG)
+
+
+Important note: In order for NFS server to be accessible from your client, you must also open following ports: TCP 111, UDP 111, UDP 2049
+
+
+
+
+![](./Images/port-opening.PNG)
 
 
 
 
 
+
+
+
+
+
+
+___
 ### **STEP 2: CONFIGURING THE DATABASE SERVER**
-
+___
 On the database server
 
 Install MYSQL server
@@ -167,4 +229,26 @@ Verify that the service is up and running by using
 
 
 Create a database and name it **tooling**
+
+`sudo mysql`
+
+`CREATE DATABASE tooling;`
+
+Create a database user and name it **webaccess**
+
+Grant permission to **webaccess** user on **tooling** database to do anything only from the webservers subnet cidr
+
+`CREATE USER 'webaccess'@'subnet-cidr' IDENTIFIED BY `password`:`
+
+`GRANT ALL PRRIVILEGES ON tooling.* TO 'webaccess'@'subnet-cidr';`
+
+`FLUSH PRIVILEGES`
+
+`SHOW DATABASES;`
+
+![](./Images/database.PNG)
+
+`exit`
+
+
 
