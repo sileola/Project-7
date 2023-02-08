@@ -236,7 +236,7 @@ Create a database user and name it **webaccess**
 
 Grant permission to **webaccess** user on **tooling** database to do anything only from the webservers subnet cidr
 
-`CREATE USER 'webaccess'@'subnet-cidr' IDENTIFIED BY `password`:`
+`CREATE USER 'webaccess'@'subnet-cidr' IDENTIFIED BY `password`;`
 
 `GRANT ALL PRRIVILEGES ON tooling.* TO 'webaccess'@'subnet-cidr';`
 
