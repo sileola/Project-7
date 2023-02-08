@@ -345,14 +345,14 @@ First, run
 `sudo cp -R html/. /var/www/html`
 
 
-Note 1: Oen TCP port 80 on the Web Server.
+Note 1: Open TCP port 80 on the Web Server.
 
 ![](./Images/tcp%3Dport-80.PNG)
 
 Note 2: If you encounter 403 Error – check permissions to your /var/www/html folder and also disable SELinux sudo setenforce 0
 
 
-To make this change permanent – open following config file sudo vi /etc/sysconfig/selinux and set SELINUX=disabledthen restrt httpd.
+To make this change permanent – open following config file sudo vi /etc/sysconfig/selinux and set SELINUX=disabled then restrt httpd.
 
 `sudo setenforce 0`
 
@@ -367,7 +367,9 @@ To make this change permanent – open following config file sudo vi /etc/syscon
 ![](./Images/statusapache.PNG)
 
 
-10. Update the website’s configuration to connect to the database (in /var/www/html/functions.php file). Apply tooling-db.sql script to your database using this command mysql -h <databse-private-ip> -u <db-username> -p <db-pasword> < tooling-db.sql
+10. Update the website’s configuration to connect to the database (in /var/www/html/functions.php file). Apply tooling-db.sql script to your database using this command
+
+`mysql -h <databse-private-ip> -u <db-username> -p <db-pasword> < tooling-db.sql`
 
 `sudo vi /var/www/html/functions.php`
 
