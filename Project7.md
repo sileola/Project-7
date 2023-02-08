@@ -126,7 +126,7 @@ Next, I mounted lv-logs on /mnt/logs
 
 Next, I mounted lv-opt on /mnt/opt
 
-`sudo mount /dev/webdata-vg/lv-apps /mnt/apps`
+`sudo mount /dev/webdata-vg/lv-opt /mnt/opt`
 
 
 
