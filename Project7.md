@@ -377,7 +377,7 @@ To make this change permanent – open following config file sudo vi /etc/syscon
 
 `cd tooling`
 
-`sudo yum insatll mysql -y`
+`sudo yum install mysql -y`
 
 On the DB server, open up the MYSQL/AURORA protocol on the IPv4 CIDR of NFS
 
@@ -414,7 +414,7 @@ From the Database server, run
 
 `select * from users;`
 
-Open the website in your browser http://<Web-Server-Public-IP-Address-or-Public-DNS-Name>/index.php and make sure you can login into the website with myuser user.
+Open the website in your browser `http://<Web-Server-Public-IP-Address-or-Public-DNS-Name>/index.php` and make sure you can login into the website with myuser user.
 
 
 ![](./Images/login.PNG)
