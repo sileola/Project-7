@@ -164,7 +164,7 @@ Next, xxport the mounts for webservers’ subnet cidr to connect as clients:
 
 Configure access to NFS for clients within the same subnet
 
-Using a text edior live Vim;
+Using a text edTior liKe Vim;
 
 `sudo vi /etc/exports`
 
@@ -307,7 +307,7 @@ ___
     `sudo systemctl enable php-fpm`
 
 
-    `setsebool -P httpd_execmem 1`
+    `sudo setsebool -P httpd_execmem 1`
 6. Verify that Apache files and directories are available on the Web Server in /var/www and also on the NFS server in /mnt/apps. If you see the same files – it means NFS is mounted correctly. You can try to create a new file touch test.txt from one server and check if the same file is accessible from other Web Servers.
 
 ![](./Images/web1.PNG)
