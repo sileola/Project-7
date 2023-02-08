@@ -238,7 +238,7 @@ Grant permission to **webaccess** user on **tooling** database to do anything on
 
 `CREATE USER 'webaccess'@'subnet-cidr' IDENTIFIED BY 'password';`
 
-`GRANT ALL PRRIVILEGES ON tooling.* TO 'webaccess'@'subnet-cidr';`
+`GRANT ALL PRIVILEGES ON tooling.* TO 'webaccess'@'subnet-cidr';`
 
 `FLUSH PRIVILEGES`
 
